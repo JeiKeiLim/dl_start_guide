@@ -1,15 +1,10 @@
 import tensorflow as tf
-import numpy as np
-import matplotlib.pyplot as plt
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
 x_train, x_test = x_train / 255.0, x_test / 255.0
-# y_train, y_test = tf.keras.utils.to_categorical(y_train), tf.keras.utils.to_categorical(y_test)
-
 
 input = tf.keras.layers.Input(shape=(32, 32, 3))
-# reshape = tf.keras.layers.Reshape((28, 28, 1))(input)
 
 
 def vgg_block(input, n_conv, n_filter, filter_size=(3, 3), reduce_size=True):
