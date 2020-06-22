@@ -8,28 +8,25 @@ x_train, x_test = x_train / 255.0, x_test / 255.0
 
 y_train, y_test = tf.keras.utils.to_categorical(y_train), tf.keras.utils.to_categorical(y_test)
 
-input = tf.keras.layers.Input(shape=(32, 32, 3))
-# reshape = tf.keras.layers.Reshape((28, 28, 1))(input)
+input = tf.keras.layers.Input(shape=(32, 32, 3)) # 32x32x3
 
-layer01_conv01 = tf.keras.layers.Conv2D(16, (3, 3), padding='SAME', strides=(1, 1), activation='relu')(input)
-layer01_conv02 = tf.keras.layers.Conv2D(16, (3, 3), padding='SAME', strides=(1, 1), activation='relu')(layer01_conv01)
-layer01_conv03 = tf.keras.layers.Conv2D(16, (3, 3), padding='SAME', strides=(1, 1), activation='relu')(layer01_conv02)
-layer01_conv_input = tf.keras.layers.Conv2D(16, (1, 1), padding='SAME', strides=(1, 1), activation='relu')(input)
-layer01_residual = tf.keras.layers.Add()([layer01_conv_input, layer01_conv03])
+layer01_conv01 = tf.keras.layers.Conv2D(16, (1, 1), padding='SAME', strides=(1, 1), activation='relu')(input) # 32x32x16
+layer01_conv02 = tf.keras.layers.Conv2D(16, (3, 3), padding='SAME', strides=(1, 1), activation='relu')(layer01_conv01) # 32x32x16
+layer01_conv03 = tf.keras.layers.Conv2D(3, (1, 1), padding='SAME', strides=(1, 1), activation='relu')(layer01_conv02) # 32x32x3
+layer01_residual = tf.keras.layers.Add()([input, layer01_conv03]) # 32x32x3
 layer01_batchnorm = tf.keras.layers.BatchNormalization()(layer01_residual)
 
-layer02_conv01 = tf.keras.layers.Conv2D(32, (3, 3), padding='SAME', strides=(2, 2), activation='relu')(layer01_batchnorm)
-layer02_conv02 = tf.keras.layers.Conv2D(32, (3, 3), padding='SAME', strides=(1, 1), activation='relu')(layer02_conv01)
-layer02_conv03 = tf.keras.layers.Conv2D(32, (3, 3), padding='SAME', strides=(1, 1), activation='relu')(layer02_conv02)
-layer02_maxpool_input = tf.keras.layers.MaxPool2D((2, 2))(layer01_residual)
-layer02_conv_input = tf.keras.layers.Conv2D(32, (1, 1), padding='SAME', strides=(1, 1), activation='relu')(layer02_maxpool_input)
+layer02_conv01 = tf.keras.layers.Conv2D(16, (1, 1), padding='SAME', strides=(1, 1), activation='relu')(layer01_batchnorm) #32x32x16
+layer02_conv02 = tf.keras.layers.Conv2D(32, (3, 3), padding='SAME', strides=(1, 1), activation='relu')(layer02_conv01) #32x32x32
+layer02_conv03 = tf.keras.layers.Conv2D(32, (3, 3), padding='SAME', strides=(1, 1), activation='relu')(layer02_conv02) #32x32x32
+layer02_conv_input = tf.keras.layers.Conv2D(32, (1, 1), padding='SAME', strides=(1, 1), activation='relu')(layer01_batchnorm) #32x32x32
 layer02_residual = tf.keras.layers.Add()([layer02_conv_input, layer02_conv03])
 layer02_batchnorm = tf.keras.layers.BatchNormalization()(layer02_residual)
 
 bt_layer01_conv01 = tf.keras.layers.Conv2D(64, (1, 1), padding='SAME', activation='relu')(layer02_batchnorm)
 bt_layer01_conv02 = tf.keras.layers.Conv2D(64, (3, 3), padding='SAME', activation='relu')(bt_layer01_conv01)
 bt_layer01_conv03 = tf.keras.layers.Conv2D(32, (1, 1), padding='SAME', activation='relu')(bt_layer01_conv02)
-bt_layer01_residual = tf.keras.layers.Add()([layer02_residual, bt_layer01_conv03])
+bt_layer01_residual = tf.keras.layers.Add()([layer02_batchnorm, bt_layer01_conv03])
 bt_layer01_batchnorm = tf.keras.layers.BatchNormalization()(bt_layer01_residual)
 
 bt_layer02_conv01 = tf.keras.layers.Conv2D(64, (1, 1), padding='SAME', activation='relu')(bt_layer01_batchnorm)
@@ -53,8 +50,7 @@ bt_layer03_residual = tf.keras.layers.Add()([layer03_residual, bt_layer03_conv03
 bt_layer03_batchnorm = tf.keras.layers.BatchNormalization()(bt_layer03_residual)
 
 global_avg_pooling = tf.keras.layers.GlobalAveragePooling2D()(bt_layer03_batchnorm)
-flatten = tf.keras.layers.Flatten()(global_avg_pooling)
-output = tf.keras.layers.Dense(10, activation='softmax')(flatten)
+output = tf.keras.layers.Dense(10, activation='softmax')(global_avg_pooling)
 
 model = tf.keras.models.Model(input, output)
 

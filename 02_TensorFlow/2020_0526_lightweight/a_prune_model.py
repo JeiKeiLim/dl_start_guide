@@ -98,14 +98,14 @@ def compute_sparsity(model_, sparse_threshold=0.05):
     sparsities = np.zeros(len(model_.layers))
 
     for i in range(sparsities.shape[0]):
-        if len(model.layers[i].weights) < 1:
+        if len(model_.layers[i].weights) < 1:
             sparsities[i] = np.nan
             continue
 
-        sparse_index = np.argwhere(np.logical_and(model.layers[i].weights[0].numpy().flatten() < sparse_threshold,
-                                                model.layers[i].weights[0].numpy().flatten() > -sparse_threshold))
+        sparse_index = np.argwhere(np.logical_and(model_.layers[i].weights[0].numpy().flatten() < sparse_threshold,
+                                                model_.layers[i].weights[0].numpy().flatten() > -sparse_threshold))
 
-        sparsities[i] = sparse_index.shape[0] / np.prod(model.layers[i].weights[0].shape)
+        sparsities[i] = sparse_index.shape[0] / np.prod(model_.layers[i].weights[0].shape)
 
     return sparsities
 

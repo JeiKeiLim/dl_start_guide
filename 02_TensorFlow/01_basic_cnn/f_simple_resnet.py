@@ -33,6 +33,9 @@ def resnet_block(input, n_filter, reduce_size=False, filter_size=(3, 3), dropout
 
     input_2 = tf.keras.layers.Conv2D(n_filter, (1, 1), padding='SAME', activation='relu')(input)
     layer = tf.keras.layers.Dropout(dropout_rate)(layer)
+
+    layer = tf.keras.layers.BatchNormalization()(layer)
+
     if reduce_size:
         input_2 = tf.keras.layers.MaxPool2D((2, 2))(input_2)
 
@@ -46,10 +49,15 @@ def resnet_bottle_neck_block(input, n_filter, filter_size=(3, 3), dropout_rate=0
 
     layer = tf.keras.layers.Conv2D(n_filter, (1, 1), padding='SAME', activation='relu')(layer)
     layer = tf.keras.layers.Dropout(dropout_rate)(layer)
+
     layer = tf.keras.layers.Conv2D(n_filter, filter_size, padding='SAME', activation='relu')(layer)
     layer = tf.keras.layers.Dropout(dropout_rate)(layer)
+
+    # batch size x width x height x # of channel
     layer = tf.keras.layers.Conv2D(input.shape[3], (1, 1), padding='SAME', activation='relu')(layer)
     layer = tf.keras.layers.Dropout(dropout_rate)(layer)
+
+    layer = tf.keras.layers.BatchNormalization()(layer)
 
     layer = tf.keras.layers.Add()([layer, input])
 
@@ -67,8 +75,7 @@ resnet_block03_02 = resnet_bottle_neck_block(resnet_block03_01, 64)
 resnet_block03_03 = resnet_bottle_neck_block(resnet_block03_02, 64)
 
 global_avg_pooling = tf.keras.layers.GlobalAveragePooling2D()(resnet_block03_03)
-flatten = tf.keras.layers.Flatten()(global_avg_pooling)
-output = tf.keras.layers.Dense(10, activation='softmax')(flatten)
+output = tf.keras.layers.Dense(10, activation='softmax')(global_avg_pooling)
 
 model = tf.keras.models.Model(input, output)
 
