@@ -55,7 +55,7 @@ def resnet_bottle_neck_block(input, n_filter, filter_size=(3, 3), dropout_rate=0
     return layer
 
 
-resnet_block01_01 = resnet_bottle_neck_block(reshape, 16)
+resnet_block01_01 = resnet_bottle_neck_block(input, 16)
 resnet_block01_02 = resnet_bottle_neck_block(resnet_block01_01, 16)
 resnet_block01_03 = resnet_bottle_neck_block(resnet_block01_02, 16)
 resnet_block02_01 = resnet_block(resnet_block01_03, 32, reduce_size=True)
@@ -73,5 +73,5 @@ model = tf.keras.models.Model(input, output)
 model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 model.summary()
 
-model.fit(x_train, y_train, batch_size=64, epochs=10,
+model.fit(x_train, y_train, batch_size=64, epochs=50,
           validation_data=(x_test, y_test))
