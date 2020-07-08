@@ -38,3 +38,7 @@ model.fit(x_train, y_train, batch_size=64, epochs=10,
 
 test_prediction = model.predict(x_test)
 
+truth = np.argmax(y_test, axis=1)
+prediction = np.argmax(test_prediction, axis=1)
+
+print("Prediction Accuracy: {:.2f}%".format((np.sum(truth == prediction) / y_test.shape[0]) * 100))
