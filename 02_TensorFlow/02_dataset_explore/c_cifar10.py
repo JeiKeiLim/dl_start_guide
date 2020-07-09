@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 
 (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
 
-n_image = 5
+n_image = 10
 
-plt.figure(figsize=(20, 30))
+plt.figure(figsize=(30, 30))
 for i in range(10):
     class_indices = np.argwhere(y_train.flatten() == i).flatten()
 
