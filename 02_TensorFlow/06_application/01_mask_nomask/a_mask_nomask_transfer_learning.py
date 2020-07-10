@@ -13,7 +13,16 @@ def add_random_noise(x):
 
     return x * 255.0
 
+
 # Set your dataset directory
+# Directory Structure:
+# -- train-set
+# ------------/on_mask
+# ------------/off_mask
+# --- test-set
+# ------------/on_mask
+# ------------/off_mask
+
 TRAINING_DIR = "/Users/jeikei/Documents/deep_summer_dataset/train-set"
 VALIDATION_DIR = "/Users/jeikei/Documents/deep_summer_dataset/test-set"
 
@@ -32,7 +41,7 @@ training_datagen = ImageDataGenerator(
       fill_mode='nearest',
       preprocessing_function=add_random_noise)
 
-validation_datagen = ImageDataGenerator(rescale = 1./255)
+validation_datagen = ImageDataGenerator(rescale=1./255)
 
 # Reading images from directory and pass them to the model
 train_generator = training_datagen.flow_from_directory(
@@ -63,16 +72,17 @@ for i in range(8):
 plt.show()
 
 # Load pre-trained base model.
-base_model = tf.keras.applications.VGG16(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
+base_model = tf.keras.applications.MobileNetV2(input_shape=(224, 224, 3),
+                                               include_top=False, weights='imagenet')
 # Freeze the base model
 base_model.trainable = False
 
 # Add Custom layers
 out_layer = tf.keras.layers.Conv2D(128, (1, 1), padding='SAME', activation=None)(base_model.output)
 out_layer = tf.keras.layers.BatchNormalization()(out_layer)
-out_layer = tf.keras.layers.ReLU()(out_layer)
+out_layer = tf.keras.layers.ReLU()(out_layer) # 7x7x128
 
-out_layer = tf.keras.layers.GlobalAveragePooling2D()(out_layer)
+out_layer = tf.keras.layers.GlobalAveragePooling2D()(out_layer) # 128
 
 out_layer = tf.keras.layers.Dense(2, activation='softmax')(out_layer)
 
@@ -81,10 +91,13 @@ model = tf.keras.models.Model(base_model.input, out_layer)
 
 model.summary()
 
-model.compile(loss='categorical_crossentropy', optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy',
+              optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+              metrics=['accuracy'])
 
 # Training
-history = model.fit(train_generator, epochs=25, validation_data=validation_generator, verbose=1)
+history = model.fit(train_generator, epochs=25,
+                    validation_data=validation_generator, verbose=1)
 
 # Save the trained model
 model.save("saved_model.h5")

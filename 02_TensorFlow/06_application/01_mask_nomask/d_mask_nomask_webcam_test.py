@@ -3,6 +3,7 @@ import numpy as np
 import time
 import cv2
 
+
 # Define the input size of the model
 input_size = (224, 224)
 

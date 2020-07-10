@@ -64,12 +64,12 @@ for i in range(8):
 plt.show()
 
 # Load pre-trained base model.
-base_model = tf.keras.applications.VGG16(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
+base_model = tf.keras.applications.MobileNetV2(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
 # Unfreeze the base model
 base_model.trainable = True
 
 # Freeze the base model except the last layer of unfreeze_n_layer
-unfreeze_n_layer = 3
+unfreeze_n_layer = 10
 for i in range(0, len(base_model.layers) - unfreeze_n_layer):
     base_model.layers[i].trainable = False
 
@@ -91,7 +91,9 @@ model.load_weights("saved_model.h5")
 model.summary()
 
 # Set lower learning rate for fine tuning
-model.compile(loss='categorical_crossentropy', optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy',
+              optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001),
+              metrics=['accuracy'])
 
 # Fine tuning
 history = model.fit(train_generator, epochs=25, validation_data=validation_generator, verbose=1)
