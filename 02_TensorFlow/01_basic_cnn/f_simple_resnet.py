@@ -35,7 +35,7 @@ def resnet_block(input, n_filter, reduce_size=False, filter_size=(3, 3), dropout
     return layer
 
 
-def resnet_bottle_neck_block(input, n_filter, filter_size=(3, 3), dropout_rate=0.5):
+def resnet_bottleneck_block(input, n_filter, filter_size=(3, 3), dropout_rate=0.5):
     layer = input
 
     layer = tf.keras.layers.Conv2D(n_filter, (1, 1), padding='SAME', activation='relu')(layer)
@@ -55,15 +55,15 @@ def resnet_bottle_neck_block(input, n_filter, filter_size=(3, 3), dropout_rate=0
     return layer
 
 
-resnet_block01_01 = resnet_bottle_neck_block(input, 16)
-resnet_block01_02 = resnet_bottle_neck_block(resnet_block01_01, 16)
-resnet_block01_03 = resnet_bottle_neck_block(resnet_block01_02, 16)
+resnet_block01_01 = resnet_bottleneck_block(input, 16)
+resnet_block01_02 = resnet_bottleneck_block(resnet_block01_01, 16)
+resnet_block01_03 = resnet_bottleneck_block(resnet_block01_02, 16)
 resnet_block02_01 = resnet_block(resnet_block01_03, 32, reduce_size=True)
-resnet_block02_02 = resnet_bottle_neck_block(resnet_block02_01, 32)
-resnet_block02_03 = resnet_bottle_neck_block(resnet_block02_02, 32)
+resnet_block02_02 = resnet_bottleneck_block(resnet_block02_01, 32)
+resnet_block02_03 = resnet_bottleneck_block(resnet_block02_02, 32)
 resnet_block03_01 = resnet_block(resnet_block02_03, 64, reduce_size=True)
-resnet_block03_02 = resnet_bottle_neck_block(resnet_block03_01, 64)
-resnet_block03_03 = resnet_bottle_neck_block(resnet_block03_02, 64)
+resnet_block03_02 = resnet_bottleneck_block(resnet_block03_01, 64)
+resnet_block03_03 = resnet_bottleneck_block(resnet_block03_02, 64)
 
 global_avg_pooling = tf.keras.layers.GlobalAveragePooling2D()(resnet_block03_03)
 output = tf.keras.layers.Dense(10, activation='softmax')(global_avg_pooling)
