@@ -1,6 +1,10 @@
 # Deep Learning Start Guide Repository
-
 This repository is designed to show the idea of how Deep Learning works for whom never have had experience on Deep Learning.
+
+# 한국어 강의 영상
+2020 여름 계절 학기 전공심화 수업에서 진행한 강의 영상 입니다.
+http://deep-summer.limjk.com
+
 
 # Requirements
 Tensorflow 2.x
