@@ -3,7 +3,7 @@ This repository is designed to show the idea of how Deep Learning works for whom
 
 # 한국어 강의 영상
 2020 여름 계절 학기 전공심화 수업에서 진행한 강의 영상 입니다.
-http://deep-summer.limjk.com
+https://www.youtube.com/channel/UClZH5RmZxu_9NMz7_hDRgTQ
 
 
 # Requirements
