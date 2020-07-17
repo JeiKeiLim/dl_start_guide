@@ -6,41 +6,47 @@ This repository is designed to show the idea of how Deep Learning works for whom
 Tensorflow 2.x
 python3.x
 
-# 01_Basic
+# Structure
+## 01_Basic
 Mostly python based code. Linear regression to Nueral Network that MNIST trainable by over 90% accuracy.
 
-# 02_TensorFlow
+## 02_TensorFlow
 TensorFlow example codes.
 
-## 01_basic_cnn
+### 02_TensorFlow/01_basic_cnn
 From Logistic Regression MNIST to (almost) Full Inception model for Cifar10.
 
-## 02_dataset_expolore
+### 02_TensorFlow/02_dataset_expolore
 Plotting datasets in TensorFlow (MNIST, FashionMNIST, Cifar10, Cifar100)
 
-## 03_activation_function
+### 02_TensorFlow/03_activation_function
 Demonstrates how activation function works
 
-## 05_transfer_learning
+### 02_TensorFlow/05_transfer_learning
 Demonstrates how transfer learning works
 
-## 06_application
+### 02_TensorFlow/06_application
 Deep Learning application examples
-### 01_mask_nomask
+#### 02_TensorFlow/06_application/01_mask_nomask
 Transfer Learning with binary classification to clasify whether you are wearing a mask on a webcam.
 
-## 07_models
+### 02_TensorFlow/07_models
 Full Model implementation
-### ResNet v1
+#### ResNet v1
 Supports all layers. (18, 34, 50, 101, 152)
-### MobileNet v1
+#### MobileNet v1
 Mobile GPU acceleration ready model.
 
-## 10_visualization
+### 02_TensorFlow/10_visualization
 Visualization of Deep Learning. CAM and Grad CAM
 
-## 20_lightweight
+### 02_TensorFlow/20_lightweight
 Demonstrates Pruning and Quantization of the model.
 
+## 04_TrainingTechnique
+GradientDescent Animation Code (Juptyer Notebook)
+
+## 05_Dataset
+Dataset Exploration on MNIST and Cifar10 with Jupter Notebook
 
 
