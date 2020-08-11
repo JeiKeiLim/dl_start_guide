@@ -5,6 +5,8 @@ This repository is designed to show the idea of how Deep Learning works for whom
 2020 여름 계절 학기 전공심화 수업에서 진행한 강의 영상 입니다.
 https://www.youtube.com/channel/UClZH5RmZxu_9NMz7_hDRgTQ
 
+<img src="https://raw.githubusercontent.com/JeiKeiLim/mygifcontainer/master/dl_guide/googlenet_anim.gif" />
+
 
 # Requirements
 Tensorflow 2.x
